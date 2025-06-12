@@ -1,6 +1,4 @@
-
-  
-  from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 from inference_sdk import InferenceHTTPClient
 import os
 app = Flask(__name__)
