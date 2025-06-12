@@ -15,11 +15,15 @@ def home():
     return "Plant Disease Detection API is running!"
 @app.route("/predict", methods=["POST"])
 def predict():
+    print("Request method:", request.method)
+    print("Request files:", request.files)
+    
     if "image" not in request.files:
         return jsonify({"error": "No image uploaded"}), 400
-    image = request.files["image"]
-    image_path = "temp.jpg"
-    image.save(image_path)
+    image = request.files.get("image") or request.files.get("file")
+    if not image:
+        return jsonify({"error": "No image uploaded"}), 400
+
     try:
         result = CLIENT.infer(image_path, model_id=MODEL_ID)
         os.remove(image_path)  # clean up after inference
