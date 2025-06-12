@@ -1,2 +1,5 @@
 streamlit
 inference-sdk
+opencv-python==4.7.0.72
+requests
+Pillow
