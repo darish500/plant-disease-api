@@ -98,8 +98,8 @@ if uploaded_file:
 
         if "predictions" in result and result["predictions"]:
             predictions = result["predictions"]
-            detected_image = draw_detections(image.copy(), predictions)
-            st.image(detected_image, caption="Detection Result", use_column_width=True)
+            # detected_image = draw_detections(image.copy(), predictions)
+            # st.image(detected_image, caption="Detection Result", use_column_width=True)
 
             st.subheader("🦠 Detected Diseases and Solutions")
             shown_classes = set()
