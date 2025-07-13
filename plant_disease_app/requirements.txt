@@ -1,6 +1,6 @@
 streamlit
-inference-sdk
-opencv-python==4.7.0.72
-requests
+inference
+opencv-python
+matplotlib
 Pillow
-roboflow
+streamlit-webrtc
