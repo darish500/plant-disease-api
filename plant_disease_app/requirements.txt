@@ -1,6 +1,9 @@
-streamlit
+
+streamlit==1.26.0
 inference
-opencv-python
+pandas
+scikit-learn
+numpy
 matplotlib
-Pillow
-streamlit-webrtc
+joblib
+
