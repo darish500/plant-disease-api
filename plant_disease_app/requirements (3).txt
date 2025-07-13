@@ -1,6 +1,0 @@
-
-  flask
-inference-sdk
-gunicorn
-
-  
