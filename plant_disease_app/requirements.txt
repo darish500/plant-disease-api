@@ -1,6 +1,6 @@
-
+python==3.10
 streamlit==1.26.0
-inference
+inference==0.2.4
 pandas
 scikit-learn
 numpy
