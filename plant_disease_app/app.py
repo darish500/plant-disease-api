@@ -69,18 +69,18 @@ def detect_image(image, model_id, api_key):
     return response.json()
 
 # Draw bounding boxes on image
-def draw_detections(image, predictions):
-    draw = ImageDraw.Draw(image)
-    for pred in predictions:
-        x, y, w, h = pred['x'], pred['y'], pred['width'], pred['height']
-        left = x - w / 2
-        top = y - h / 2
-        right = x + w / 2
-        bottom = y + h / 2
-        label = f"{pred['class']} ({int(pred['confidence'] * 100)}%)"
-        draw.rectangle([left, top, right, bottom], outline="red", width=3)
-        draw.text((left, top - 10), label, fill="red")
-    return image
+# def draw_detections(image, predictions):
+#     draw = ImageDraw.Draw(image)
+#     for pred in predictions:
+#         x, y, w, h = pred['x'], pred['y'], pred['width'], pred['height']
+#         left = x - w / 2
+#         top = y - h / 2
+#         right = x + w / 2
+#         bottom = y + h / 2
+#         label = f"{pred['class']} ({int(pred['confidence'] * 100)}%)"
+#         draw.rectangle([left, top, right, bottom], outline="red", width=3)
+#         draw.text((left, top - 10), label, fill="red")
+#     return image
 
 # Streamlit UI
 st.title("🌾 AI-Powered Crop Disease Detector")
