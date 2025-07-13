@@ -1,6 +1,6 @@
 opencv-python
 streamlit==1.26.0
-inference==0.2.4
+roboflow
 pandas
 scikit-learn
 numpy
