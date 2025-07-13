@@ -1,4 +1,4 @@
-python==3.10.13
+opencv-python
 streamlit==1.26.0
 inference==0.2.4
 pandas
