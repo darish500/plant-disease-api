@@ -86,6 +86,13 @@ def detect_image(image, model_id, api_key):
 st.title("🌾 AI-Powered Crop Disease Detector")
 crop = st.selectbox("Select Crop", list(model_configs.keys()))
 uploaded_file = st.file_uploader("Upload Crop Image", type=["jpg", "jpeg", "png"])
+camera_file = st.camera_input("Take a picture")
+# Use either upload or camera
+input_image = None
+if uploaded_file:
+    input_image = Image.open(uploaded_file).convert("RGB")
+elif camera_file:
+    input_image = Image.open(camera_file).convert("RGB")
 
 if uploaded_file:
     image = Image.open(uploaded_file).convert("RGB")
