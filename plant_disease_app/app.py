@@ -11,11 +11,11 @@ model_configs = {
         "api_url": "https://serverless.roboflow.com",  # or detect.roboflow.com
         "api_key": "xg0E2Az768qCexdziw72",
         "solutions": {
-            "cbb": "Cassava Bacterial Blight: Use resistant varieties.",
-            "cmd": "Cassava Mosaic Disease: Remove infected plants.",
-            "cgm": "Cassava Green Mite: Apply miticides or use biocontrol.",
-            "cbsd": "Cassava Brown Streak Disease: Use virus-free cuttings.",
-            "healthy": "Healthy cassava plant!"
+            "CBB": "Cassava Bacterial Blight: Use resistant varieties.",
+            "CMD": "Cassava Mosaic Disease: Remove infected plants.",
+            "CGM": "Cassava Green Mite: Apply miticides or use biocontrol.",
+            "CBSD": "Cassava Brown Streak Disease: Use virus-free cuttings.",
+            "Healthy": "Healthy cassava plant!"
         }
     },
     "maize": {
