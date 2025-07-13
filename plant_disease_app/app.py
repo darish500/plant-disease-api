@@ -110,5 +110,6 @@ if uploaded_file:
                     solution = config["solutions"].get(disease, "No solution available.")
                     st.markdown(f"**{disease}**")
                     st.write(f"👉 Solution: {solution}")
+                    st.info("Done")
         else:
             st.warning("No disease detected.")
