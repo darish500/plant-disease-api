@@ -1,9 +1,3 @@
-opencv-python
-streamlit==1.26.0
-roboflow
-pandas
-scikit-learn
-numpy
-matplotlib
-joblib
-
+streamlit
+pillow
+requests
