@@ -4,26 +4,50 @@ from PIL import Image
 from io import BytesIO
 import base64
 
-# Language translations
+# Define supported languages and translations
 language_options = {
-    "en": "English",
-    "yo": "Yoruba",
-    "ig": "Igbo",
-    "ha": "Hausa"
+    "English": "en",
+    "Hausa": "ha",
+    "Yoruba": "yo",
+    "Igbo": "ig"
 }
 
-# Solutions translations (example only, extend as needed)
-translations = {
-    "en": lambda x: x,
-    "yo": lambda x: f"(Yoruba translation) {x}",
-    "ig": lambda x: f"(Igbo translation) {x}",
-    "ha": lambda x: f"(Hausa translation) {x}"
+# Example translation dictionaries (expand as needed)
+translation_dict = {
+    "Fall_Armyworm": {
+        "ha": "Dangiya mai kashe amfanin gona",
+        "yo": "Kokoro iparun eso",
+        "ig": "Nwanyi oku na-akpata ọnwụ mkpụrụ osisi"
+    },
+    "Apply biopesticides or neem-based products; monitor regularly.": {
+        "ha": "Yi amfani da magungunan kashe kwari na halitta ko na neem; duba akai-akai.",
+        "yo": "Lo awọn oloro kokoro adayeba tabi awọn ọja neem; ṣọra nigbagbogbo.",
+        "ig": "Tinye ọgwụ nje anụmanụ ma ọ bụ ngwaahịa neem; na-enyocha mgbe niile."
+    },
+    "Can this disease affect yield?": {
+        "ha": "Shin wannan cutar na iya rage yawan amfanin gona?",
+        "yo": "Ṣe arun yii le ni ipa lori ikore?",
+        "ig": "Enwere ike ka ọrịa a metụta mkpokọta?"
+    },
+    "Yes, this disease significantly reduces crop yield if not managed properly.": {
+        "ha": "Eh, wannan cutar na rage yawan amfanin gona idan ba a kula da ita ba.",
+        "yo": "Bẹẹni, arun yii dinku ikore to ba jẹ pe a ko tọju rẹ daradara.",
+        "ig": "Ee, ọrịa a na-ebelata mkpokọta ma ọ bụrụ na a naghị ewere ya n’isi."
+    }
 }
 
-# Model configuration and solution mappings
+# Inbuilt chatbot questions and answers
+qa_bank = {
+    "Can this disease affect yield?": "Yes, this disease significantly reduces crop yield if not managed properly.",
+    "What are the early symptoms?": "Look for leaf discoloration, spots, or unusual patterns.",
+    "How do I prevent this disease?": "Use resistant varieties, rotate crops, and monitor plants closely."
+}
+
+# Model configurations
 model_configs = {
     "cassava": {
         "model_id": "cassava-disease-zqjxb-rl2r2/1",
+        "api_url": "https://serverless.roboflow.com",
         "api_key": "xg0E2Az768qCexdziw72",
         "solutions": {
             "CBB": "Cassava Bacterial Blight: Use resistant varieties.",
@@ -35,6 +59,7 @@ model_configs = {
     },
     "maize": {
         "model_id": "maize-disease-w9ggw/2",
+        "api_url": "https://serverless.roboflow.com",
         "api_key": "HjAbvCwdDSoHCJzZBFIR",
         "solutions": {
             "Anthracnose_leaf_blight": "Remove infected debris and rotate crops.",
@@ -50,6 +75,7 @@ model_configs = {
     },
     "rice": {
         "model_id": "rice-disease-vahwz-6b2ii/1",
+        "api_url": "https://serverless.roboflow.com",
         "api_key": "HjAbvCwdDSoHCJzZBFIR",
         "solutions": {
             "Bacterial Leaf Blight Disease or Bacterial Blight Disease": "Use certified seeds and avoid excessive nitrogen.",
@@ -66,6 +92,7 @@ model_configs = {
     }
 }
 
+# Utility functions
 def image_to_base64(image):
     buffer = BytesIO()
     image.save(buffer, format="JPEG")
@@ -78,10 +105,14 @@ def detect_image(image, model_id, api_key):
     response = requests.post(url, data=base64_img, headers=headers)
     return response.json()
 
-st.title("🌾 AI-Powered Multilingual Crop Disease Detector")
+def translate(text, lang_code):
+    return translation_dict.get(text, {}).get(lang_code, text)
+
+# Streamlit UI
+st.title("🌾 AI-Powered Crop Disease Detector")
 crop = st.selectbox("Select Crop", list(model_configs.keys()))
-language = st.selectbox("Select Language", list(language_options.values()))
-language_code = list(language_options.keys())[list(language_options.values()).index(language)]
+language = st.selectbox("Select Language", list(language_options.keys()))
+lang_code = language_options[language]
 
 uploaded_file = st.file_uploader("Upload Crop Image", type=["jpg", "jpeg", "png"])
 camera_file = st.camera_input("Take a picture")
@@ -101,24 +132,25 @@ if input_image:
         result = detect_image(input_image, config["model_id"], config["api_key"])
 
         if "predictions" in result and result["predictions"]:
-            predictions = result["predictions"]
             st.subheader("🦠 Detected Diseases and Solutions")
             shown_classes = set()
-            for pred in predictions:
+            for pred in result["predictions"]:
                 disease = pred["class"]
                 if disease not in shown_classes:
                     shown_classes.add(disease)
-                    solution_en = config["solutions"].get(disease, "No solution available.")
-                    translated_solution = translations[language_code](solution_en)
-                    st.markdown(f"**{disease}**")
+                    translated_disease = translate(disease, lang_code)
+                    solution = config["solutions"].get(disease, "No solution available.")
+                    translated_solution = translate(solution, lang_code)
+                    st.markdown(f"**{translated_disease}**")
                     st.write(f"👉 Solution: {translated_solution}")
-                    st.info("Done")
+
+            # Chatbot section
+            st.subheader("🤖 Ask a Question about the Detected Disease")
+            question = st.selectbox("Choose a question", list(qa_bank.keys()))
+            if question:
+                translated_q = translate(question, lang_code)
+                translated_a = translate(qa_bank[question], lang_code)
+                st.markdown(f"**{translated_q}**")
+                st.write(f"💬 {translated_a}")
         else:
             st.warning("No disease detected.")
-
-        st.subheader("💬 Ask a question about crop health")
-        user_question = st.text_input("Type your question:")
-        if user_question:
-            answer = f"(Sample AI answer for: '{user_question}')"
-            translated_answer = translations[language_code](answer)
-            st.success(translated_answer)
