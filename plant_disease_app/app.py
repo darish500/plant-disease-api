@@ -94,14 +94,13 @@ if uploaded_file:
 elif camera_file:
     input_image = Image.open(camera_file).convert("RGB")
 
-if uploaded_file:
-    image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+if input_image:
+    st.image(input_image, caption="Selected Image", use_column_width=True)
 
     if st.button("Detect Disease"):
         st.info("Processing...")
         config = model_configs[crop]
-        result = detect_image(image, config["model_id"], config["api_key"])
+        result = detect_image(input_image, config["model_id"], config["api_key"])
 
         if "predictions" in result and result["predictions"]:
             predictions = result["predictions"]
