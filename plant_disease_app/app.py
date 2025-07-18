@@ -145,7 +145,7 @@ elif camera_file:
     input_image = Image.open(camera_file).convert("RGB")
 
 if input_image:
-    st.image(input_image, caption="Selected Image", use_column_width=True)
+    st.image(input_image, caption="Selected Image", use_column_width=False)
 
     if st.button(translate("Detect Disease", st.session_state.selected_lang)):
         config = model_configs[st.session_state.selected_crop]
