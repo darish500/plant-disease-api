@@ -141,9 +141,10 @@ elif camera_file:
     input_image = Image.open(camera_file).convert("RGB")
 
 if input_image:
-    st.image(input_image, caption=translate_text("Uploaded Image", lang_code), use_column_width=True)
+    st.image(input_image, caption=translate_text("Uploaded Image", lang_code), use_container_width=True)
 
-    if st.button("Detect Disease"):
+    detect_clicked = st.button("Detect Disease")
+    if detect_clicked:
         with st.spinner(translate_text("Analyzing Image...", lang_code)):
             config = model_configs[crop]
             result = detect_image(input_image, config["model_id"], config["api_key"])
@@ -167,11 +168,12 @@ if input_image:
             else:
                 st.error(translate_text("❌ No plant detected. Please snap or upload a crop image.", lang_code))
 
-        st.markdown("---")
-        st.subheader("🧠 " + translate_text("Ask a Question", lang_code))
+    # 👇 This is now OUTSIDE the button logic, so it's always visible
+    st.markdown("---")
+    st.subheader("🧠 " + translate_text("Ask a Question", lang_code))
 
-        question_options = list(chatbot_questions[lang_code].keys())
-        selected_question = st.selectbox(translate_text("Select a question:", lang_code), question_options)
+    question_options = list(chatbot_questions[lang_code].keys())
+    selected_question = st.selectbox(translate_text("Select a question:", lang_code), question_options)
 
-        if selected_question:
-            st.info(chatbot_questions[lang_code][selected_question])
+    if selected_question:
+        st.info(chatbot_questions[lang_code][selected_question])
