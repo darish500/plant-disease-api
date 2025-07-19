@@ -117,7 +117,7 @@ def image_to_base64(image):
 # Detect using Roboflow
 def detect_image(image, model_id, api_key):
     base64_img = image_to_base64(image)
-    url = f"https://detect.roboflow.com/{model_id}?api_key={api_key}&confidence=40"
+    url = f"https://detect.roboflow.com/{model_id}?api_key={api_key}&confidence=35"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     response = requests.post(url, data=base64_img, headers=headers)
     return response.json()
